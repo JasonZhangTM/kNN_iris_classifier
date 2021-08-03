@@ -7,14 +7,9 @@ FILENAME = 'iris.data'
 
 # App title and description
 def main():
-    st.title('Iris Flower Classifier')
-    st.markdown("""
-    Predict the species of an Iris flower using sepal and petal measurements.  
-    Return __`Top 10`__ most similar records in iris Dataset
-    """)
-    
+
     # Define components for the sidebar
-    st.sidebar.header('Input Features')
+    st.sidebar.header('Input Iris Measurements')
     sepal_length = float(st.sidebar.slider(
         label='Sepal Length',
         min_value= 0.0 ,
@@ -47,13 +42,32 @@ def main():
     normMat, ranges, minVals = normalizer(irisDataMat)
     inArr = np.array([sepal_length,sepal_width,petal_length,petal_width])
     
-    k = 10
+    st.sidebar.header('Top N most similar')
+    k = int(st.sidebar.slider(
+        label='Top',
+        min_value= 5 ,
+        max_value= 15,
+        value= 10,
+        step= 1))    
+    
     classifierResult = classifier((inArr - minVals)/ranges, normMat, irisLabels, k)[0]
     nearestNeighborIndice = classifier((inArr - minVals)/ranges, normMat, irisLabels, k)[1]
     
-    st.markdown("The flower is most likely to be: __{}__\n".format(classifierResult))
+    st.title('Iris Flower Classifier')
+    st.markdown("""
+    Predict the species of an Iris flower using sepal and petal measurements.  
+    Return __`Top {}`__ most similar records in iris Dataset
+    """.format(k))
     
-    st.markdown("The top 10 similar records: ")
+    st.markdown("The flower is most likely to be: __{}__\n".format(classifierResult))
+    if classifierResult == 'Iris-setosa':
+        st.image('docs/setosa.jpg', width=None)
+    if classifierResult == 'Iris-versicolor':
+        st.image('docs/versicolor.jpg', width=None)
+    if classifierResult == 'Iris-virginica':
+        st.image('docs/virginica.jpg', width=None)
+    
+    st.markdown("The top {} similar records: ".format(k))
     st.dataframe(irisData.iloc[nearestNeighborIndice])
 
     
