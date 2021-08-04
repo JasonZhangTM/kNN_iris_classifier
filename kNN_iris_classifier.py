@@ -115,7 +115,7 @@ def main(k = 10):
     petal_length= float(input("Petal Length: "))
     petal_width= float(input("Petal Width: "))
     
-    colNames = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'class']
+    colNames = ['Sepal Length', 'Sepal Width', 'Petal Length', 'Petal Width', 'Class']
     irisDataMat, irisLabels = file2matrix("iris.data")
     irisData = file2df("iris.data",colNames)
     
